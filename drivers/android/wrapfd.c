@@ -356,7 +356,7 @@ static int dmabuf_content_load_prepare(struct file *file, struct dma_buf *dmabuf
 	if (ret)
 		return ret;
 
-	ret = dma_buf_vmap(dmabuf, &map);
+	ret = dma_buf_vmap_unlocked(dmabuf, &map);
 	if (ret)
 		goto err_end_access;
 
@@ -374,7 +374,7 @@ static int dmabuf_content_load_prepare(struct file *file, struct dma_buf *dmabuf
 	return 0;
 
 err_unmap:
-	dma_buf_vunmap(dmabuf, &map);
+	dma_buf_vunmap_unlocked(dmabuf, &map);
 err_end_access:
 	dma_buf_end_cpu_access(dmabuf, DMA_BIDIRECTIONAL);
 	return ret;
@@ -383,7 +383,7 @@ err_end_access:
 static void dmabuf_content_load_complete(struct dmabuf_load_param *param)
 {
 	wrap_io_complete(&param->io_ctx);
-	dma_buf_vunmap(param->dmabuf, &param->map);
+	dma_buf_vunmap_unlocked(param->dmabuf, &param->map);
 	dma_buf_end_cpu_access(param->dmabuf, DMA_BIDIRECTIONAL);
 }
 
