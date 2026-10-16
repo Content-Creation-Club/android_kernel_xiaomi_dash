@@ -2797,7 +2797,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
 #endif
 
 	if (pinning) {
-		max_secno = sbi->pinned_area_max_secno;
+		max_secno = min(sbi->pinned_area_max_secno, MAIN_SECS(sbi));
 		hint = 0;
 	}
 
