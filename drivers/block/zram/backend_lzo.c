@@ -21,7 +21,8 @@ static int lzo_compress(void *ctx, const unsigned char *src, size_t src_len,
 {
 	int ret;
 
-	ret = lzo1x_1_compress_safe(src, src_len, dst, dst_len, ctx);
+	/* zcomp supplies two pages, above the worst-case bound for one. */
+	ret = lzo1x_1_compress(src, src_len, dst, dst_len, ctx);
 	return ret == LZO_E_OK ? 0 : ret;
 }
 
