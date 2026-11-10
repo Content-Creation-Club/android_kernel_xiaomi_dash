@@ -14,6 +14,7 @@ obj-$(CONFIG_ZSTD_COMMON) += zstd_common.o
 
 zstd_compress-y := \
 		zstd_compress_module.o \
+		zstd_compress_ext.o \
 		compress/fse_compress.o \
 		compress/hist.o \
 		compress/huf_compress.o \
