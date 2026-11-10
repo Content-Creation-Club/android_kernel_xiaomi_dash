@@ -24,6 +24,11 @@
 
 ~~没有直接提供内核成品的必要。~~
 
+## ACK 与 GKI 边界
+
+启动兼容、通用功能、设备诊断和继承的 capability 策略例外，按类别整理在
+[维护说明](Documentation/admin-guide/dash-gki.rst) 中。
+
 ## 如何构建
 
 ```bash
