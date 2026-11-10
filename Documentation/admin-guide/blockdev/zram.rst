@@ -102,15 +102,32 @@ Examples::
 	#select lzo compression algorithm
 	echo lzo > /sys/block/zram0/comp_algorithm
 
-For the time being, the `comp_algorithm` content does not necessarily
-show every compression algorithm supported by the kernel. We keep this
-list primarily to simplify device configuration and one can configure
-a new device with a compression algorithm that is not listed in
-`comp_algorithm`. The thing is that, internally, ZRAM uses Crypto API
-and, if some of the algorithms were built as modules, it's impossible
-to list all of them using, for instance, /proc/crypto or any other
-method. This, however, has an advantage of permitting the usage of
-custom crypto compression modules (implementing S/W or H/W compression).
+For the time being, the `comp_algorithm` content shows only compression
+algorithms that are supported by zram.
+
+Compression algorithm parameters
+-------------------------------
+
+Select an algorithm, then set its compression level before initializing
+the device with disksize. For example, to use Zstd level 3::
+
+	echo zstd > /sys/block/zram0/comp_algorithm
+	echo "priority=0 level=3" > /sys/block/zram0/algorithm_params
+
+Alternatively, select the configured algorithm by name::
+
+	echo "algo=zstd level=1" > /sys/block/zram0/algorithm_params
+
+When the same algorithm is configured at multiple priorities, use
+``priority=N`` to choose the intended instance. ``algo=`` selects the
+first matching priority. The default priority is 0. Zstd uses its library
+default level when no level is set; LZ4 uses its default acceleration.
+LZO and LZO-RLE have no level tuning.
+
+Parameters cannot be changed after initialization. Reset the device before
+changing levels; reset also restores default parameters. The supported
+keys are ``algo``, ``priority`` and ``level``; unsupported keys return
+``-EINVAL``.
 
 4) Set Disksize
 ===============
@@ -205,6 +222,7 @@ writeback_limit_enable  RW	show and set writeback_limit feature
 max_comp_streams  	RW	the number of possible concurrent compress
 				operations
 comp_algorithm    	RW	show and change the compression algorithm
+algorithm_params	WO	setup compression algorithm parameters
 compact           	WO	trigger memory compaction
 debug_stat        	RO	this file is used for zram debugging purposes
 backing_dev	  	RW	set up backend storage for zram to write out

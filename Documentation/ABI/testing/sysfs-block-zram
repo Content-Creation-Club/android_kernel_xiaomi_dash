@@ -151,3 +151,16 @@ Contact:	Sergey Senozhatsky <senozhatsky@chromium.org>
 Description:
 		The recompress file is write-only and triggers re-compression
 		with secondary compression algorithms.
+
+What:		/sys/block/zram<id>/algorithm_params
+Date:		August 2024
+Contact:	Sergey Senozhatsky <senozhatsky@chromium.org>
+Description:
+		The algorithm_params file is write-only and is used to setup
+		compression algorithm parameters.
+		Select the algorithm before setting its level, using either
+		"algo=zstd level=3" or "priority=0 level=3". The default
+		priority is 0. Parameters must be set before disksize;
+		changing them on an initialized device returns -EBUSY.
+		Reset restores the default parameters. Supported keys are
+		algo, priority and level.
