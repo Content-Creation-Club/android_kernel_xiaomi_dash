@@ -124,4 +124,14 @@ config ANDROID_DSU_AVB_BYPASS
 	  The helper does not change vbmeta contents or SELinux enforcement.
 	  It applies to normal boots as well as DSU boots.
 
+config ANDROID_WRAPFD
+	bool "WrapFD Driver"
+	depends on MMU
+	help
+	  Enable WrapFD driver to control ability to map a file
+
+	  WrapFD allows wrapping an fd representing a memory buffer into a new
+	  file supporting ioctl API for file ownership that controls ability to
+	  map the file.
+
 endmenu
