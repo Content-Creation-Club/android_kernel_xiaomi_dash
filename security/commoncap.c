@@ -75,7 +75,7 @@ int cap_capable(const struct cred *cred, struct user_namespace *targ_ns,
 	for (;;) {
 		/* Do we have the necessary capabilities? */
 		if (ns == cred->user_ns)
-			return 0;
+			return cap_raised(cred->cap_effective, cap) ? 0 : -EPERM;
 
 		/*
 		 * If we're already at a lower level than we're looking for,

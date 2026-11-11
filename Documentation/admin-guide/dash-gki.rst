@@ -63,19 +63,18 @@ and disabled in the current core configuration. If enabling one, check its
 module consumers and any private symbols or structure fields together. Do not
 infer core Image contents from the device-module configuration alone.
 
-Capability policy exception
-===========================
+Standard capability policy
+==========================
 
-``security/commoncap.c:cap_capable()`` returns success when it reaches the
-credential's user namespace instead of checking ``cap_effective``. The local
-history traces this behavior to Xiaomi's original public import
-``2d28e280ea36``; it was not introduced by the later ACK, AVB or compression
-changes. That import provides no explanation of the policy's purpose.
+``security/commoncap.c:cap_capable()`` checks ``cap_effective`` when it reaches
+the credential's user namespace, matching ACK. The former unconditional
+success at this point came from Xiaomi's original public import
+``2d28e280ea36``, which did not explain its purpose.
 
-This affects commoncap checks broadly; SELinux still has its own checks. Keep
-this exception distinct from hardware support and from the first-stage AVB
-helper. Restoring standard capability checks requires a separate policy
-decision and affected-use validation.
+This policy is independent of SELinux, GKI symbol protection and first-stage
+AVB adaptation. Validate it by dropping a disposable test process's own
+capabilities and checking that a bounding-set change requires CAP_SETPCAP.
+Check affected vendor services rather than reinstating a global exception.
 
 Build policy and official GKI replacement
 ========================================
