@@ -24,11 +24,6 @@ Full builds and device bringups require the following trees:
 
 ~~No prebuilt boot images provided. Build it yourself.~~
 
-## ACK and GKI Boundary
-
-Local boot compatibility, generic features, device diagnostics and the inherited
-capability-policy exception are tracked in [Maintaining the dash ACK boundary](Documentation/admin-guide/dash-gki.rst).
-
 ## Build
 
 ```bash
